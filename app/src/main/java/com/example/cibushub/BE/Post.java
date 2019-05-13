@@ -2,7 +2,9 @@ package com.example.cibushub.BE;
 
 import android.net.Uri;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable {
     private String Id;
     private String PictureId;
     private String PostName;

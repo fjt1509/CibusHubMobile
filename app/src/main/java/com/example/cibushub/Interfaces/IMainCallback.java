@@ -4,11 +4,12 @@ import com.example.cibushub.BE.Post;
 
 import java.util.ArrayList;
 
-public interface IResult {
+public interface IMainCallback {
 
-    void setResult(Post post);
     void setResult(ArrayList<Post> postList);
     void startLoad();
     void stopLoad();
+    void setError(String error);
+
 
 }

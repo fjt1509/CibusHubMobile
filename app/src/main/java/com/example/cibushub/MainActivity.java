@@ -1,31 +1,36 @@
 package com.example.cibushub;
 
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.cibushub.BE.Post;
-import com.example.cibushub.Interfaces.IResult;
+import com.example.cibushub.Interfaces.IDataImage;
+import com.example.cibushub.Interfaces.IMainCallback;
 import com.example.cibushub.Model.DataAccessFactory;
 import com.example.cibushub.Interfaces.IDataAccess;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.cibushub.Model.DataImage;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements IResult {
+public class MainActivity extends AppCompatActivity implements IMainCallback {
 
     public static String TAG = "CibusHub";
 
@@ -34,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements IResult {
     private ProgressBar pBar;
 
     private IDataAccess mDataAccess;
+    private IDataImage dataImage;
+
+    private ArrayList<Post> postHolder;
 
 
     @Override
@@ -42,20 +50,33 @@ public class MainActivity extends AppCompatActivity implements IResult {
         setContentView(R.layout.activity_main);
 
         mDataAccess = DataAccessFactory.getInstance(this);
+        dataImage = new DataImage();
         listView = findViewById(R.id.postList);
         pBar = findViewById(R.id.progressBar);
         pBar.setVisibility(View.GONE);
         mDataAccess.ReadAllPosts(this);
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
     }
 
 
     private void setupListView(ArrayList<Post> postList) {
 
+        postHolder = postList;
         adpater = new PostAdapter(this, R.layout.activity_main_cell, postList);
         listView.setAdapter(adpater);
-    }
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent x = new Intent(MainActivity.this, DetailsActivity.class);
+                Post post = postHolder.get(position);
+                x.putExtra("post", post);
+                startActivity(x);
+            }
+        });
+    }
 
 
     private class PostAdapter extends ArrayAdapter<Post> {
@@ -88,11 +109,7 @@ public class MainActivity extends AppCompatActivity implements IResult {
             TextView txtPostDate = v.findViewById(R.id.txtPostDate);
             final ImageView postPic = v.findViewById(R.id.imgThumnail);
 
-           // Log.d(TAG, post.getPostImage().toString());
-           // GlideApp.with(v.getContext()).load(post.getPostImage()).into(postPic);
-
-            setImage(v.getContext(), postPic, post);
-
+            dataImage.setImageFromPostPicId(v.getContext(), postPic, post.getPictureId());
 
             txtPostName.setText(post.getPostName());
             txtPostDesc.setText(post.getPostDescription());
@@ -101,18 +118,37 @@ public class MainActivity extends AppCompatActivity implements IResult {
             return v;
         }
 
-        private void setImage(final Context context, final ImageView postPic, Post post) {
-            storage.getReference("post-pictures/" + post.getPictureId()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    GlideApp.with(context).load(uri).into(postPic);
-                }
-            });
-        }
+
     }
 
     @Override
-    public void setResult(Post post) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemAddPost:
+                Intent x = new Intent(MainActivity.this, AddPostActivity.class);
+                startActivity(x);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        adpater.clear();
+        mDataAccess.ReadAllPosts(this);
+        super.onRestart();
+
+    }
+    @Override
+    public void setError(String error) {
+        //Handle error
     }
 
     @Override

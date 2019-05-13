@@ -1,11 +1,9 @@
 package com.example.cibushub.Interfaces;
 
-import com.example.cibushub.BE.Post;
-import com.example.cibushub.MainActivity;
-
-import java.util.ArrayList;
-
 public interface IDataAccess {
 
-    void ReadAllPosts (IResult result);
+    void ReadAllPosts (IMainCallback result);
+    void DeletePost (IDetailsCallback result, String id);
+    void GetAllComments (ICommentCallBack result, String id);
+    void AddComment (ICommentCallBack result, String id, String comment);
 }

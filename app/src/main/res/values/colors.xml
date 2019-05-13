@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorTheme">#056800</color>
+    <color name="commentColor">#399b39</color>
 </resources>
