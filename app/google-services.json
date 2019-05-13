@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "337517889839",
+    "firebase_url": "https://cibushub.firebaseio.com",
+    "project_id": "cibushub",
+    "storage_bucket": "cibushub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337517889839:android:beddc02bf86039df",
+        "android_client_info": {
+          "package_name": "com.example.cibushub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337517889839-fe38gg50gnq0jipkcbkarp2p86i0khng.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cibushub",
+            "certificate_hash": "8685e6373ebeabbb4aabebae13fc9233891163c3"
+          }
+        },
+        {
+          "client_id": "337517889839-79p0j29fldulbfne7tbh585gpj5te7fk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc4QpsroTyqb7amJ5_39975xk0tf3W4Do"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337517889839-79p0j29fldulbfne7tbh585gpj5te7fk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
