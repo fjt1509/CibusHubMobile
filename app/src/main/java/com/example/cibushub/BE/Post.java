@@ -15,6 +15,12 @@ public class Post implements Serializable {
     public Post() {
     }
 
+    public Post(String postName, String postDescription, String postTime) {
+        PostName = postName;
+        this.postDescription = postDescription;
+        PostTime = postTime;
+    }
+
     public String getId() {
         return Id;
     }

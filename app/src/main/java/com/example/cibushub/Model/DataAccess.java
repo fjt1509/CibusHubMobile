@@ -1,11 +1,14 @@
 package com.example.cibushub.Model;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.cibushub.BE.Comment;
+import com.example.cibushub.BE.PictureFile;
 import com.example.cibushub.BE.Post;
+import com.example.cibushub.Interfaces.IAddPostCallback;
 import com.example.cibushub.Interfaces.ICommentCallBack;
 import com.example.cibushub.Interfaces.IDataAccess;
 import com.example.cibushub.Interfaces.IDetailsCallback;
@@ -18,6 +21,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.ServerTimestamp;
+import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firestore.v1.DocumentTransform;
 
@@ -32,8 +36,7 @@ import static com.example.cibushub.MainActivity.TAG;
 class DataAccess implements IDataAccess {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-
+    private FirebaseFunctions functions = FirebaseFunctions.getInstance();
 
     public DataAccess(Context c)
     {
@@ -84,6 +87,7 @@ class DataAccess implements IDataAccess {
             }
         });
     }
+
     @Override
     public void GetAllComments(final ICommentCallBack result, String id) {
         result.startReadLoad();
@@ -137,6 +141,10 @@ class DataAccess implements IDataAccess {
 
 
 
+    }
+
+    @Override
+    public void AddPost(IAddPostCallback result, Post post, PictureFile pic) {
     }
 
 
