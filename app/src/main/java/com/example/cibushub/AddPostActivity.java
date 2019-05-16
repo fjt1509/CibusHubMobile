@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cibushub.BE.PictureFile;
@@ -43,6 +45,9 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
     IDataAccess dataAccess;
     FloatingActionButton btnTakePhoto;
     FloatingActionButton btnAddPost;
+    ProgressBar progressAdd;
+    TextView txtAddLoading;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,11 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
         StrictMode.setVmPolicy(builder.build());
 
         dataAccess = DataAccessFactory.getInstance(this);
+
+        progressAdd = findViewById(R.id.progressAdd);
+        progressAdd.setVisibility(View.GONE);
+        txtAddLoading = findViewById(R.id.txtAddLoading);
+        txtAddLoading.setVisibility(View.INVISIBLE);
 
         inputPostName = findViewById(R.id.inputPostNameAdd);
         inputPostDesc = findViewById(R.id.inputPostDescAdd);
@@ -90,6 +100,9 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
                 Date postDate = new Date();
                 Post post = new Post(postName, postDesc, postDate.toString());
 
+                dataAccess.AddPost(this, post, postPic);
+
+
 
             }
 
@@ -102,7 +115,7 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
     private String base64Encode(File mFile) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap bitmap = BitmapFactory.decodeFile(mFile.getPath());
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return imageString;
@@ -198,7 +211,7 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
 
     @Override
     public void setOnSuccess() {
-
+        finish();
     }
 
     @Override
@@ -208,11 +221,30 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
 
     @Override
     public void startLoading() {
+        btnTakePhoto.hide();
+        inputPostName.setVisibility(View.GONE);
+        inputPostName.setHint("");
+        inputPostDesc.setVisibility(View.GONE);
+        inputPostName.setHint("");
+        imageTaken.setVisibility(View.GONE);
+        btnAddPost.hide();
+
+        txtAddLoading.setVisibility(View.VISIBLE);
+        progressAdd.setVisibility(View.VISIBLE);
+
 
     }
 
     @Override
     public void stopLoading() {
+        btnTakePhoto.show();
+        inputPostName.setVisibility(View.VISIBLE);
+        inputPostDesc.setVisibility(View.VISIBLE);
+        imageTaken.setVisibility(View.VISIBLE);
+        btnAddPost.show();
+
+        progressAdd.setVisibility(View.GONE);
+        txtAddLoading.setVisibility(View.GONE);
 
     }
 }
