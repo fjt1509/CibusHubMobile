@@ -111,7 +111,7 @@ public class CommentActivity extends AppCompatActivity implements ICommentCallBa
             TextView txtComment = v.findViewById(R.id.txtComment);
 
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String date = dateFormat.format(comment.getTime());
 
             txtCommentDate.setText(date);

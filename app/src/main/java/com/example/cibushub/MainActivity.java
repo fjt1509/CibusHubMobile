@@ -30,6 +30,8 @@ import com.example.cibushub.Interfaces.IDataAccess;
 import com.example.cibushub.Model.DataImage;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
             txtPostName.setText(post.getPostName());
             txtPostDesc.setText(post.getPostDescription());
-            txtPostDate.setText(post.getPostTime().subSequence(0,10));
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = dateFormat.format(post.getPostTime());
+            txtPostDate.setText(date);
 
             return v;
         }

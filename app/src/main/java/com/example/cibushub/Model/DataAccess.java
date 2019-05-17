@@ -227,7 +227,6 @@ class DataAccess implements IDataAccess {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("postName", payload.getPost().getPostName());
                 jsonObject.put("postDescription", payload.getPost().getPostDescription());
-                jsonObject.put("postTime", payload.getPost().getPostTime());
                 jsonObject.put("image", jsonImage);
 
 
@@ -284,7 +283,6 @@ class DataAccess implements IDataAccess {
                 jsonObject.put("pictureId", payload.getPost().getPictureId());
                 jsonObject.put("postName", payload.getPost().getPostName());
                 jsonObject.put("postDescription", payload.getPost().getPostDescription());
-                jsonObject.put("postTime", payload.getPost().getPostTime());
                 jsonObject.put("image", jsonImage);
 
 

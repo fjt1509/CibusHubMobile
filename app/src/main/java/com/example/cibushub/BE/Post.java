@@ -3,19 +3,20 @@ package com.example.cibushub.BE;
 import android.net.Uri;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Post implements Serializable {
     private String Id;
     private String PictureId;
     private String PostName;
     private String postDescription;
-    private String PostTime;
+    private Date PostTime;
     private Uri PostImage;
 
     public Post() {
     }
 
-    public Post(String postName, String postDescription, String postTime) {
+    public Post(String postName, String postDescription, Date postTime) {
         PostName = postName;
         this.postDescription = postDescription;
         PostTime = postTime;
@@ -37,7 +38,7 @@ public class Post implements Serializable {
         return postDescription;
     }
 
-    public String getPostTime() {
+    public Date getPostTime() {
         return PostTime;
     }
 
@@ -61,7 +62,7 @@ public class Post implements Serializable {
         PostImage = postImage;
     }
 
-    public void setPostTime(String postTime) {
+    public void setPostTime(Date postTime) {
         PostTime = postTime;
     }
 

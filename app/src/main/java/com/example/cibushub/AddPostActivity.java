@@ -100,7 +100,7 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
                 String postName = inputPostName.getText().toString();
                 String postDesc = inputPostDesc.getText().toString();
                 Date postDate = new Date();
-                Post post = new Post(postName, postDesc, postDate.toString());
+                Post post = new Post(postName, postDesc, postDate);
 
                 dataAccess.AddPost(this, post, postPic);
             } else {
