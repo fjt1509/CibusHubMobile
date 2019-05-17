@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.cibushub.BE.PictureFile;
 import com.example.cibushub.BE.Post;
+import com.example.cibushub.Helpers.PostPicUtils;
 import com.example.cibushub.Interfaces.IAddPostCallback;
 import com.example.cibushub.Interfaces.IDataAccess;
 import com.example.cibushub.Model.DataAccessFactory;
@@ -38,6 +39,7 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
     private final static String LOGTAG = "Camtag";
     private final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private final static int REQUEST_GET_SINGLE_FILE = 101;
+    private PostPicUtils postPicUtils;
     File mFile;
     ImageView imageTaken;
     EditText inputPostName;
@@ -52,7 +54,6 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkPermissions();
         setContentView(R.layout.activity_add_post);
 
         imageTaken = findViewById(R.id.imageTaken);
@@ -60,6 +61,7 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
         StrictMode.setVmPolicy(builder.build());
 
         dataAccess = DataAccessFactory.getInstance(this);
+        postPicUtils = new PostPicUtils();
 
         progressAdd = findViewById(R.id.progressAdd);
         progressAdd.setVisibility(View.GONE);
@@ -92,7 +94,7 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
         {
             if(mFile.exists())
             {
-                String base64 = base64Encode(mFile);
+                String base64 = postPicUtils.base64Encode(mFile);
                 PictureFile postPic = new PictureFile(base64, mFile.length(), mFile.getName());
 
                 String postName = inputPostName.getText().toString();
@@ -101,9 +103,8 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
                 Post post = new Post(postName, postDesc, postDate.toString());
 
                 dataAccess.AddPost(this, post, postPic);
-
-
-
+            } else {
+                Toast.makeText(this, "Please take a photo to post", Toast.LENGTH_LONG).show();
             }
 
         } else {
@@ -112,20 +113,10 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
 
     }
 
-    private String base64Encode(File mFile) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = BitmapFactory.decodeFile(mFile.getPath());
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return imageString;
-    }
-
-
     private void takePhoto()
     {
 
-        mFile = getOutputMediaFile(); // create a file to save the image
+        mFile = postPicUtils.getOutputMediaFile();
         if (mFile == null)
         {
             Toast.makeText(this, "Could not create file...", Toast.LENGTH_LONG).show();
@@ -152,26 +143,6 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
         Log.d(LOGTAG, s);
     }
 
-    private File getOutputMediaFile(){
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "Camera01");
-
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                log("failed to create directory");
-                return null;
-            }
-        }
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String postfix = "jpg";
-        String prefix = "IMG";
-
-        File mediaFile = new File(mediaStorageDir.getPath() +
-                File.separator + prefix +
-                "_"+ timeStamp + "." + postfix);
-
-        return mediaFile;
-    }
 
     private void showPictureTaken(File f) {
         imageTaken.setImageURI(Uri.fromFile(f));
@@ -193,20 +164,6 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
 
 
 
-    private void checkPermissions() {
-        ArrayList<String> permissions = new ArrayList<String>();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            permissions.add(Manifest.permission.CAMERA);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
-            permissions.add(Manifest.permission.CALL_PHONE);
-
-        if (permissions.size() > 0)
-            ActivityCompat.requestPermissions(this, permissions.toArray(new String[permissions.size()]), 1);
-    }
 
 
     @Override
@@ -215,9 +172,10 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
     }
 
     @Override
-    public void setOnError() {
-
+    public void setOnError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public void startLoading() {
@@ -231,8 +189,6 @@ public class AddPostActivity extends AppCompatActivity implements IAddPostCallba
 
         txtAddLoading.setVisibility(View.VISIBLE);
         progressAdd.setVisibility(View.VISIBLE);
-
-
     }
 
     @Override

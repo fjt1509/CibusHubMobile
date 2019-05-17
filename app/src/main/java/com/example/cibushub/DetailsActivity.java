@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,10 +22,14 @@ import com.example.cibushub.Model.DataImage;
 
 public class DetailsActivity extends AppCompatActivity implements IDetailsCallback {
 
+    private final static int REQUEST_UPDATE_FOR_POST = 101;
+
+
     TextView txtPostName;
     TextView txtPostDesc;
     ImageView postImage;
     FloatingActionButton deleteBtn;
+    FloatingActionButton updateBtn;
 
     private ProgressBar deleteProgress;
 
@@ -64,6 +69,16 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsCallba
             }
         });
 
+        updateBtn = findViewById(R.id.btnEdit);
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent x = new Intent(DetailsActivity.this, UpdateActivity.class);
+                x.putExtra("post", post);
+                startActivityForResult(x,REQUEST_UPDATE_FOR_POST);
+            }
+        });
+
         findViewById(R.id.btnComments).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +95,12 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsCallba
     }
 
 
-
+    @Override
+    public void onRestart() {
+        postImage.setImageResource(0);
+        dataImage.setImageFromPostPicId(this, postImage, post.getPictureId());
+        super.onRestart();
+    }
 
     @Override
     public void finishActivity() {
@@ -102,5 +122,23 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsCallba
     public void setError(String error) {
         deleteBtn.show();
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("RESULTTAG", Integer.toString(requestCode));
+        Log.d("RESULTTAG", Integer.toString(resultCode));
+        if (requestCode == REQUEST_UPDATE_FOR_POST) {
+            if (resultCode == RESULT_OK) {
+                post = (Post) data.getExtras().getSerializable("updatedPost");
+                txtPostName.setText(post.getPostName());
+                txtPostDesc.setText(post.getPostDescription());
+                dataImage.setImageFromPostPicId(this, postImage, post.getPictureId());
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Canceled...", Toast.LENGTH_LONG).show();
+                return;
+
+            } else
+                Toast.makeText(this, "Could not update post - unknown error...", Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cibushub">
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
-
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -21,13 +23,15 @@
         android:roundIcon="@drawable/ic_action_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".UpdateActivity"></activity>
+        <activity android:name=".CommentActivity" />
         <activity
             android:name=".DetailsActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".AddPostActivity"
             android:launchMode="singleTask" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -35,7 +39,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/xml_path"/>
+                android:resource="@xml/xml_path" />
         </provider>
 
         <activity android:name=".MainActivity">
@@ -46,6 +50,5 @@
             </intent-filter>
         </activity>
     </application>
-
 
 </manifest>

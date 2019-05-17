@@ -1,7 +1,10 @@
 package com.example.cibushub;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkPermissions();
         setContentView(R.layout.activity_main);
 
         mDataAccess = DataAccessFactory.getInstance(this);
@@ -108,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
             TextView txtPostDesc = v.findViewById(R.id.txtPostDesc);
             TextView txtPostDate = v.findViewById(R.id.txtPostDate);
             final ImageView postPic = v.findViewById(R.id.imgThumnail);
+            postPic.setImageResource(0);
 
             dataImage.setImageFromPostPicId(v.getContext(), postPic, post.getPictureId());
 
@@ -117,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
             return v;
         }
-
 
     }
 
@@ -164,6 +168,22 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
     @Override
     public void stopLoad() {
         pBar.setVisibility(View.GONE);
+    }
+
+
+    private void checkPermissions() {
+        ArrayList<String> permissions = new ArrayList<String>();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+            permissions.add(Manifest.permission.CAMERA);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
+            permissions.add(Manifest.permission.CALL_PHONE);
+
+        if (permissions.size() > 0)
+            ActivityCompat.requestPermissions(this, permissions.toArray(new String[permissions.size()]), 1);
     }
 
 }

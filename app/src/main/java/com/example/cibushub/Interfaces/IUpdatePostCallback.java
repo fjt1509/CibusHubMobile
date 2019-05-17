@@ -1,6 +1,6 @@
 package com.example.cibushub.Interfaces;
 
-public interface IAddPostCallback {
+public interface IUpdatePostCallback {
     void setOnSuccess();
     void setOnError(String error);
     void startLoading();
