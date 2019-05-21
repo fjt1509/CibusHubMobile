@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.cibushub.BE.Comment;
 import com.example.cibushub.Interfaces.ICommentCallBack;
 import com.example.cibushub.Interfaces.IDataAccess;
-import com.example.cibushub.Model.DataAccessFactory;
+import com.example.cibushub.DAL.DataAccessFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -25,9 +25,9 @@ import android.widget.TextView;
 import com.example.cibushub.BE.Post;
 import com.example.cibushub.Interfaces.IDataImage;
 import com.example.cibushub.Interfaces.IMainCallback;
-import com.example.cibushub.Model.DataAccessFactory;
+import com.example.cibushub.DAL.DataAccessFactory;
 import com.example.cibushub.Interfaces.IDataAccess;
-import com.example.cibushub.Model.DataImage;
+import com.example.cibushub.DAL.DataImage;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.text.DateFormat;

@@ -1,13 +1,11 @@
 package com.example.cibushub;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,8 +15,8 @@ import com.example.cibushub.BE.Post;
 import com.example.cibushub.Interfaces.IDataAccess;
 import com.example.cibushub.Interfaces.IDataImage;
 import com.example.cibushub.Interfaces.IDetailsCallback;
-import com.example.cibushub.Model.DataAccessFactory;
-import com.example.cibushub.Model.DataImage;
+import com.example.cibushub.DAL.DataAccessFactory;
+import com.example.cibushub.DAL.DataImage;
 
 public class DetailsActivity extends AppCompatActivity implements IDetailsCallback {
 

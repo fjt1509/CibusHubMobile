@@ -22,8 +22,8 @@ import com.example.cibushub.Helpers.PostPicUtils;
 import com.example.cibushub.Interfaces.IDataAccess;
 import com.example.cibushub.Interfaces.IDataImage;
 import com.example.cibushub.Interfaces.IUpdatePostCallback;
-import com.example.cibushub.Model.DataAccessFactory;
-import com.example.cibushub.Model.DataImage;
+import com.example.cibushub.DAL.DataAccessFactory;
+import com.example.cibushub.DAL.DataImage;
 
 import java.io.File;
 import java.util.Date;

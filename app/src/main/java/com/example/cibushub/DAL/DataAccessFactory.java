@@ -1,4 +1,4 @@
-package com.example.cibushub.Model;
+package com.example.cibushub.DAL;
 
 import android.content.Context;
 
